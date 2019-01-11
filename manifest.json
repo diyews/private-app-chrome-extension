@@ -3,18 +3,23 @@
   "version": "1.0",
   "description": "Build an Extension!",
   "permissions": [
-    "webRequest",
-    "<all_urls>",
     "activeTab",
     "declarativeContent",
     "storage"
   ],
   "background": {
     "scripts": [
-      "background.js"
+      "background.js",
+      "background-js/background-douyu.js"
     ],
     "persistent": true
   },
+  "content_scripts": [
+    {
+      "matches": ["*://localhost/*"],
+      "js": ["lib/crypto/md5-min.js", "lib/crypto/enc-base64-min.js", "content-js/content-diye-ws.js"]
+    }
+  ],
   "page_action": {
     "default_popup": "popup.html",
     "default_icon": {
