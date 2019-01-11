@@ -28,31 +28,6 @@ chrome.tabs.onUpdated.addListener(function (tabId, change, tab) {
     }
 });
 
-let once = true;
-chrome.webRequest.onBeforeRequest.addListener(
-    function (details) {
-        console.log(details.requestBody);
-        const param = details.requestBody.formData;
-        const requestParam = new FormData();
-        ['v', 'did', 'tt', 'sign', 'cdn', 'rate', 'ver', 'iar', 'ive'].forEach(x => {
-            requestParam.append(x, param[x]);
-        });
-        if (once) {
-            once = false;
-            fetch(details.url,
-                {
-                    method: 'POST',
-                    body: new URLSearchParams(requestParam)
-                })
-                .then(data => data.json())
-                .then(data => {
-                    console.log(data);
-                })
-        }
-        return details;
-    },
-    {urls: ['*://*/*/getH5Play/*']},
-    ['requestBody']);
 
 // message
 chrome.extension.onConnect.addListener(function(port) {
@@ -62,13 +37,14 @@ chrome.extension.onConnect.addListener(function(port) {
         console.log("message recieved" + msg);
         port.postMessage("Hi Popup.js");
     });
-})
+});
 
 chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
+        console.log(sender);
         console.log(sender.tab ?
             "from a content script:" + sender.tab.url :
             "from the extension");
-        if (request.greeting == "hello")
+        if (request.greeting === "hello")
             sendResponse({farewell: "goodbye"});
     });
