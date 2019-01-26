@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, NgZone, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-auth-token',
@@ -21,6 +21,5 @@ export class AuthTokenComponent implements OnInit {
 
   confirm() {
     chrome.storage.sync.set({'auth-token': this.authToken});
-    chrome.tabs.create()
   }
 }
